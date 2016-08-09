@@ -34,6 +34,10 @@ SELECT * FROM book;
 SELECT * FROM user;
 </sql:query>
 
+<sql:query dataSource="${snapshot}" var="orders">
+SELECT * FROM orders WHERE return_date IS NULL;
+</sql:query>
+
 	<h2>Create order</h2>
 
 	<form:form method="POST" commandName="order" action="create">
@@ -66,6 +70,29 @@ SELECT * FROM user;
 				<td colspan="3"><input type="submit" /></td>
 			</tr>
 		</table>
+	</form:form>
+
+	<h2>Return order</h2>
+
+	<form:form method="POST" commandName="order" action="return">
+	  <form:errors path="*" cssClass="errorblock" element="div" />
+	  <div>${message}</div>
+	  <table>
+	    <tr>
+	      <td>Order ID :</td>
+	      <td>
+	        <form:select path="id">
+	          <c:forEach var="row" items="${orders.rows}">
+	            <form:option value="${row.id}">${row.id}</form:option>
+	          </c:forEach>
+	        </form:select>
+	      </td>
+	      <td><form:errors path="user.id" cssClass="error" /></td>
+	    </tr>
+	    <tr>
+              <td colspan="3"><input type="submit" /></td>
+            </tr>
+	  </table>
 	</form:form>
 
 </body>

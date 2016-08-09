@@ -38,9 +38,6 @@ public class OrderServiceImpl implements OrderService {
   public void createOrder(OrderVO orderVO) {
 
     Order orderEntity = new Order();
-
-    // orderEntity.setId(orderVO.getId());
-    orderEntity.setReturnDate(null);
     orderEntity.setBook(bookDao.findOne(orderVO.getBook().getId()));
     orderEntity.setUser(userDao.findOne(orderVO.getUser().getId()));
 
@@ -51,9 +48,9 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public void returnOrder(Integer id) {
 
-    OrderVO order = getOrder(id);
+    Order order = orderDao.findOne(id);
     order.setReturnDate(LocalDate.now());
-    createOrder(order);
+    orderDao.save(order);
 
   }
 

@@ -36,6 +36,20 @@ public class OrderAdminController {
     return "order";
   }
 
+  @RequestMapping(value = "/return", method = RequestMethod.POST)
+  public String returnOrder(@Valid OrderVO order, BindingResult result, Model model) {
+
+    if (result.hasErrors()) {
+      model.addAttribute("order", order);
+      model.addAttribute("message", "Failed operation.");
+    } else {
+      orderService.returnOrder(order.getId());
+      model.addAttribute("order", new OrderVO());
+      model.addAttribute("message", "Success operation.");
+    }
+    return "order";
+  }
+
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String orderForm(Model model) {
     model.addAttribute("order", new OrderVO());
